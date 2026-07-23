@@ -217,10 +217,11 @@ function Index() {
           onSubmit={async (e) => {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
-            
-            formData.append("from_name", "Farhana's Little World");
-            formData.append("subject", "A New Letter for Farhana");
-            
+
+            const senderName = formData.get("name") || "Someone";
+            formData.append("from_name", `${senderName} 🌷 (Farhana's World)`);
+            formData.append("subject", `💌 New message from ${senderName}`);
+
             try {
               const res = await fetch("https://api.web3forms.com/submit", {
                 method: "POST",
