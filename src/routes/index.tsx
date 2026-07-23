@@ -179,7 +179,7 @@ function Index() {
           <div className="absolute -top-10 -left-10 text-9xl opacity-10 rotate-12">💌</div>
           <div className="absolute -bottom-10 -right-10 text-9xl opacity-10 -rotate-12">🌷</div>
           <p className="font-hand text-2xl text-rose">psst… a secret</p>
-          <h2 className="font-display text-3xl md:text-4xl font-bold text-plum mt-1">A message from Masud</h2>
+          <h2 className="font-display text-3xl md:text-4xl font-bold text-plum mt-1">A message from ******</h2>
 
           {!showMasud ? (
             <button
@@ -194,9 +194,7 @@ function Index() {
                 "প্রিয় Farhana,<br />
                 তুমি এই পৃথিবীর সবচেয়ে সুন্দর কারণ —<br />
                 যেদিন থেকে তুমি আছো, আমার প্রতিটা দিন একটু বেশি রঙিন।<br />
-                এই ছোট্ট website-টা আমার তরফ থেকে একটা চিঠি,<br />
-                যেখানে তোমার গল্পগুলো চিরকাল বেঁচে থাকবে। 💛<br />
-                <span className="text-rose">— তোমার Masud</span>"
+                <span className="text-rose">— তোমার ভালোবাসার মানুষ</span>"
               </p>
               <div className="mt-6 flex justify-center gap-3 text-3xl">
                 <span className="animate-float">💛</span>
@@ -216,24 +214,46 @@ function Index() {
         </div>
 
         <form
-          onSubmit={(e) => { e.preventDefault(); setSent(true); }}
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.currentTarget);
+            
+            try {
+              const res = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formData
+              });
+              if (res.ok) {
+                setSent(true);
+                e.currentTarget.reset();
+              }
+            } catch (error) {
+              console.error("Error submitting form", error);
+            }
+          }}
           className="mt-10 paper-card p-8 space-y-5"
         >
+          <input type="hidden" name="access_key" value="f6410e31-3150-44e3-b298-8049c8a6574b" />
+
           <div className="grid sm:grid-cols-2 gap-5">
             <label className="block">
               <span className="text-sm font-semibold text-plum">তোমার নাম</span>
-              <input required type="text" className="mt-1 w-full rounded-xl border border-input bg-background/70 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-rose/40" placeholder="Your name" />
+              <input required type="text" name="name" className="mt-1 w-full rounded-xl border border-input bg-background/70 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-rose/40" placeholder="Your name" />
             </label>
             <label className="block">
               <span className="text-sm font-semibold text-plum">ইমেইল</span>
-              <input required type="email" className="mt-1 w-full rounded-xl border border-input bg-background/70 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-rose/40" placeholder="you@example.com" />
+              <input required type="email" name="email" className="mt-1 w-full rounded-xl border border-input bg-background/70 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-rose/40" placeholder="you@example.com" />
             </label>
           </div>
           <label className="block">
             <span className="text-sm font-semibold text-plum">তোমার বার্তা</span>
-            <textarea required rows={5} className="mt-1 w-full rounded-xl border border-input bg-background/70 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-rose/40" placeholder="Say something sweet…" />
+            <textarea required name="message" rows={5} className="mt-1 w-full rounded-xl border border-input bg-background/70 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-rose/40" placeholder="Say something sweet…" />
           </label>
-          <button type="submit" className="ribbon w-full py-3.5 rounded-full font-semibold shadow-lg hover:scale-[1.02] transition">
+
+          {/* Spam protection */}
+          <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} />
+
+          <button type="submit" disabled={sent} className="ribbon w-full py-3.5 rounded-full font-semibold shadow-lg hover:scale-[1.02] transition disabled:opacity-70 disabled:cursor-not-allowed">
             {sent ? "পাঠানো হয়েছে 💌 — ধন্যবাদ!" : "চিঠি পাঠাও →"}
           </button>
         </form>
