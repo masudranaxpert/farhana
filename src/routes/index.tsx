@@ -218,6 +218,10 @@ function Index() {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
             
+            const senderName = formData.get("name") || "Someone";
+            formData.append("from_name", `${senderName} 🌷 (Farhana's World)`);
+            formData.append("subject", `💌 New message from ${senderName}`);
+            
             try {
               const res = await fetch("https://api.web3forms.com/submit", {
                 method: "POST",
