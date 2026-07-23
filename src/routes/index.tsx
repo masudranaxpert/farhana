@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import heroBloom from "@/assets/hero-bloom.jpg";
 import aboutDesk from "@/assets/about-desk.jpg";
@@ -6,6 +6,7 @@ import memFood from "@/assets/mem-food.jpg";
 import memBook from "@/assets/mem-book.jpg";
 import memMovie from "@/assets/mem-movie.jpg";
 import memTomato from "@/assets/mem-tomato.jpg";
+import { projectsData } from "@/data/projects";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -25,27 +26,6 @@ const gallery = [
   { src: memBook, caption: "গল্পের পাতায়" },
   { src: memMovie, caption: "মুভি নাইট" },
   { src: memTomato, caption: "ল্যাব থেকে" },
-];
-
-const projects = [
-  {
-    title: "Tomato Disease Detection",
-    tag: "Research",
-    desc: "টমেটো পাতার রোগ চিহ্নিতকরণে deep learning মডেল — কৃষকের জন্য সহজ mobile-friendly tool।",
-    accent: "from-rose to-peach",
-  },
-  {
-    title: "Little World Journal",
-    tag: "Personal",
-    desc: "প্রতিদিনের ছোট মুহূর্ত, রেসিপি আর ভাবনা — একটা ডিজিটাল ডায়েরি।",
-    accent: "from-peach to-gold",
-  },
-  {
-    title: "Community Learning Circle",
-    tag: "Volunteer",
-    desc: "স্কুল-পড়ুয়া মেয়েদের জন্য সপ্তাহান্তে বিজ্ঞান ও ইংরেজি সেশন।",
-    accent: "from-gold to-rose",
-  },
 ];
 
 function Index() {
@@ -172,13 +152,23 @@ function Index() {
           <h2 className="font-display text-4xl md:text-5xl font-bold text-plum mt-1">Projects &amp; Achievements</h2>
         </div>
         <div className="mt-12 grid md:grid-cols-3 gap-6">
-          {projects.map((p) => (
-            <article key={p.title} className="paper-card p-6 group relative overflow-hidden">
-              <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${p.accent}`} />
-              <span className="text-xs uppercase tracking-widest text-rose font-bold">{p.tag}</span>
-              <h3 className="font-display text-2xl font-bold text-plum mt-2">{p.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-foreground/75">{p.desc}</p>
-              <div className="mt-5 text-rose text-sm font-semibold opacity-0 group-hover:opacity-100 transition">Read more →</div>
+          {projectsData.map((p) => (
+            <article key={p.title} className="paper-card p-6 group relative flex flex-col justify-between overflow-hidden">
+              <div>
+                <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${p.accent}`} />
+                <span className="text-xs uppercase tracking-widest text-rose font-bold">{p.tag}</span>
+                <h3 className="font-display text-2xl font-bold text-plum mt-2">{p.title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-foreground/75">{p.desc}</p>
+              </div>
+              <div className="mt-6">
+                <Link
+                  to="/projects/$slug"
+                  params={{ slug: p.slug }}
+                  className="inline-flex items-center text-rose text-sm font-semibold hover:underline group-hover:translate-x-1 transition-all"
+                >
+                  Read more →
+                </Link>
+              </div>
             </article>
           ))}
         </div>
@@ -252,7 +242,7 @@ function Index() {
       <footer className="mt-10 border-t border-border/60">
         <div className="mx-auto max-w-6xl px-6 py-10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="font-hand text-2xl text-plum">Farhana's Little World</p>
-          <p className="text-sm text-muted-foreground">Made with 💛 &amp; watercolor — © {new Date().getFullYear()}</p>
+          <p className="text-sm text-muted-foreground">Made with 💛 Farhana © 2026</p>
         </div>
       </footer>
     </div>
